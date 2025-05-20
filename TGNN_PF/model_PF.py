@@ -8,7 +8,7 @@ import tensorflow as tf
 import numpy as np
 import pandas as pd
 
-import tgnv5_PF
+from tgnv5_PF import TGNmodel
 from FuncDeltas import func_deltas
 from misc import scatter_nd_add_diff, v_check_control, s_check_control
 from Get_Data import DataImporter
@@ -64,7 +64,7 @@ class TGN_PF(object):
 
         # tgn
         var, mat, msg, loop = self.define_tgn(self.dim_e, self.dim_pv, self.dim_pq)
-        self.tgn_model = tgnv5_pf.TGNmodel(var, mat, msg, loop, self.in_dim, self.out_dim, self.time_steps)
+        self.tgn_model = TGNmodel(var, mat, msg, loop, self.in_dim, self.out_dim, self.time_steps)
 
         self.optimizer = tf.keras.optimizers.Adam(self.lr)
 

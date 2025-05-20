@@ -1,6 +1,7 @@
 import tensorflow as tf
 from tensorflow.keras import layers
 
+
 class FullyConnected(layers.Layer):
     def __init__(self,
                  latent_dimension=10,
@@ -34,7 +35,7 @@ class FullyConnected(layers.Layer):
         # Iterate over all layers
         for layer in range(self.hidden_layers):
 
-            if (layer == self.hidden_layers-1) and (self.output_dim is not None):
+            if (layer == self.hidden_layers - 1) and (self.output_dim is not None):
                 self.dense_[str(layer)] = layers.Dense(units=self.output_dim,
                                                        name='dense_' + self._name + '_{}'.format(layer),
                                                        )
@@ -150,7 +151,8 @@ class TGNmodel(tf.keras.Model):
                         new_states[v] = states[v]
                     # end cell scope
                 # end for v in var
-                return (t+1), new_states
+                return (t + 1), new_states
+
             # end while_body
 
             _, last_states = tf.while_loop(
@@ -173,7 +175,7 @@ class TGNmodel(tf.keras.Model):
         num_vars = {}
 
         for v, d in self.var.items():
-            init_shape = tf.shape(initial_states[v])  
+            init_shape = tf.shape(initial_states[v])
             num_vars[v] = init_shape[0]
 
         for mat, (v1, v2) in self.mat.items():
@@ -211,6 +213,7 @@ class TGNmodel(tf.keras.Model):
             # end if-else
         # end for mat, (v1,v2)
         return assertions
+
     # end check_run
 
     def check_model(self):

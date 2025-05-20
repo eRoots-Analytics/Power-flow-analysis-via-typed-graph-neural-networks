@@ -7,7 +7,7 @@ from numpy.random import default_rng
 import tensorflow as tf
 
 # choose from data files
-from Case30Net import *
+from Data_files.Case30Net import *
 
 from misc import v_check_control
 
@@ -163,7 +163,7 @@ class DataImporter(object):
         # generators
         cols = self.gens_batch_default['Vg'].shape[1]
 
-        gen_noise = rng.uniform(low=sigma_pg, high=1-sigma_pf, size=(n_samples, cols))
+        gen_noise = rng.uniform(low=sigma_pg, high=1-sigma_pg, size=(n_samples, cols))
         self.gens_batch['Pg'] = self.gens_batch_default['Pg_max_min'] * gen_noise
 
         Vg_noise = rng.uniform(low=1-sigma_vg, high=1+sigma_vg, size=(n_samples, cols))
