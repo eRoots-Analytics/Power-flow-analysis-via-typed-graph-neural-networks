@@ -10,16 +10,22 @@ import tensorflow as tf
 
 # choose from data files
 #jad from Case30Net import *
+import importlib
 
 from misc import v_check_control
 
 class DataImporter(object):
 
-    def __init__(self,
-                 batch_size=10):
+    #def __init__(self,
+    #             batch_size=10):
+    def __init__(self, args):
+        self.batch_size = args.batch_size
 
-        self.batch_size = batch_size
-        self.input_data = ref_grid()
+        #self.batch_size = batch_size
+
+        case_name = args.dataset  # jad Debe venir del parser de argumentos, por ejemplo "Case30Net" o "Case30Net_from_mat"
+        case_module = importlib.import_module(f"Data_files.{case_name}")  #jad
+        self.input_data = case_module.ref_grid()
 
         bus_i = np.reshape(self.input_data['bus'][:, 0], [1, -1])  # horizontallly
         fbus = np.reshape(self.input_data['branch'][:, 0], [-1, 1])  # vertically

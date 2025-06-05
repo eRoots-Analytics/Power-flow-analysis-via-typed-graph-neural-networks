@@ -59,8 +59,8 @@ class TGN_PF(object):
             self.set_config(config)
 
         # import default data
-        self.data_importer = DataImporter(batch_size=self.batch_size)
-        self.slack_bus, self.slack_bus_gens = self.data_importer.get_slack_info()
+        #jad self.data_importer = DataImporter(batch_size=self.batch_size)
+        #jad add and delete self.slack_bus, self.slack_bus_gens = self.data_importer.get_slack_info()
 
         # tgn
         var, mat, msg, loop = self.define_tgn(self.dim_e, self.dim_pv, self.dim_pq)
@@ -136,6 +136,11 @@ class TGN_PF(object):
         """
         Saves the configuration of the model and the trained weights
         """
+        import os
+
+        # Crear directorio si no existe
+        os.makedirs(self.directory, exist_ok=True)
+
         # save config
         config = self.get_config()
         path_to_config = os.path.join(self.directory, 'config.json')
@@ -479,3 +484,7 @@ class TGN_PF(object):
         loss_test = self.cost_func(delta_p, delta_q)
         return loss_test, Vmag_pred, Vang_pred, delta_p, delta_q
         
+    #jad add
+    def set_data_importer(self, data_importer):
+        self.data_importer = data_importer
+        self.slack_bus, self.slack_bus_gens = self.data_importer.get_slack_info()
