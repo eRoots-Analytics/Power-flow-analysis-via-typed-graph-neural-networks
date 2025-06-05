@@ -482,7 +482,15 @@ class TGN_PF(object):
         delta_p, delta_q, _, _ = func_deltas(buses_batch, gens_batch, lines_batch, V_batch,
                                              self.slack_bus, self.slack_bus_gens)
         loss_test = self.cost_func(delta_p, delta_q)
-        return loss_test, Vmag_pred, Vang_pred, delta_p, delta_q
+
+        #jad return loss_test, Vmag_pred, Vang_pred, delta_p, delta_q
+        print("🔍 Valores reales de magnitud de tensión:")
+        print(V_batch['mag'])
+
+        print("🔍 Valores reales de ángulo de tensión:")
+        print(V_batch['ang'])
+
+        return loss_test, V_batch['mag'], V_batch['ang'], delta_p, delta_q
         
     #jad add
     def set_data_importer(self, data_importer):
