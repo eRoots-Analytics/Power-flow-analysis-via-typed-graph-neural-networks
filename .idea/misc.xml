@@ -3,5 +3,5 @@
   <component name="Black">
     <option name="sdkName" value="pyTPF" />
   </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="pyTPF" project-jdk-type="Python SDK" />
+  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.11 (Power-flow-analysis-via-typed-graph-neural-networks)" project-jdk-type="Python SDK" />
 </project>
