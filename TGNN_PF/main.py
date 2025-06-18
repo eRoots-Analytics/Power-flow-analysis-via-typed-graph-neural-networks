@@ -109,7 +109,8 @@ if __name__ == '__main__':
         time_steps=args.time_steps,
         tgn_layers=args.tgn_layers,
         directory=result_dir,
-        model_to_restore=args.result_dir
+        model_to_restore=args.result_dir,
+        dataset = "case14Net",
     )
 
     #train = True

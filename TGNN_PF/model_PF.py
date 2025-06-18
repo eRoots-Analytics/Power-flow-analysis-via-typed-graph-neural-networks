@@ -27,7 +27,8 @@ class TGN_PF(object):
                  non_lin='tanh',
                  name='TGN_PFsolverTop',
                  directory='./',
-                 model_to_restore=None):
+                 model_to_restore=None,
+                 dataset = "case14Net.py"):
 
         # training parameters
         self.batch_size = batch_size
@@ -59,8 +60,8 @@ class TGN_PF(object):
             self.set_config(config)
 
         # import default data
-        #jad self.data_importer = DataImporter(batch_size=self.batch_size)
-        #jad add and delete self.slack_bus, self.slack_bus_gens = self.data_importer.get_slack_info()
+        self.data_importer = DataImporter(batch_size=self.batch_size, dataset = dataset) #jad
+        self.slack_bus, self.slack_bus_gens = self.data_importer.get_slack_info() #jad add and delete
 
         # tgn
         var, mat, msg, loop = self.define_tgn(self.dim_e, self.dim_pv, self.dim_pq)
@@ -496,3 +497,11 @@ class TGN_PF(object):
     def set_data_importer(self, data_importer):
         self.data_importer = data_importer
         self.slack_bus, self.slack_bus_gens = self.data_importer.get_slack_info()
+
+    def predict_single_case(self, case_dict):
+        """
+        Realiza la predicción de magnitud y ángulo de tensión para un único caso.
+        """
+        sample_batch = self.data_importer.preprocess_batch([case_dict])
+        Vmag_pred, Vang_pred = self(sample_batch, training=False)
+        return Vmag_pred[0].numpy(), Vang_pred[0].numpy()

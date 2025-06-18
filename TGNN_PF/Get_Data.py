@@ -2,6 +2,9 @@ import random
 import sys
 #jad
 sys.path.append('../Data_files')  # Añadir la carpeta 'datos' al path de Python
+import os
+import sys
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 import numpy as np
 import pandas as pd
@@ -18,12 +21,12 @@ class DataImporter(object):
 
     #def __init__(self,
     #             batch_size=10):
-    def __init__(self, args):
-        self.batch_size = args.batch_size
+    def __init__(self, batch_size, dataset):
+        self.batch_size = batch_size
 
         #self.batch_size = batch_size
 
-        case_name = args.dataset  # jad Debe venir del parser de argumentos, por ejemplo "Case30Net" o "Case30Net_from_mat"
+        case_name = dataset  # jad Debe venir del parser de argumentos, por ejemplo "Case30Net" o "Case30Net_from_mat"
         case_module = importlib.import_module(f"Data_files.{case_name}")  #jad
         self.input_data = case_module.ref_grid()
 
@@ -213,4 +216,28 @@ class DataImporter(object):
         self.V['mag'] = v_check_control(self.V['mag'], self.gens_batch['Vg'], self.indices_gens)
 
         return self.buses_batch, self.gens_batch, self.lines_reduced, self.V
+
+    def preprocess_batch(self, batch_data):
+        """
+        Devuelve el preprocesado necesario para una sola muestra.
+        batch_data: lista de diccionarios, cada uno representando un caso.
+        """
+        # Supone que el preprocesado es el mismo que en get_dataset(), solo que para un batch manual
+        # from Data_utils import create_batch
+        import os
+        import sys
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        project_root = os.path.abspath(os.path.join(current_dir, ".."))
+        if project_root not in sys.path:
+            sys.path.insert(0, project_root)
+
+        from Data_utils import create_batch
+
+
+        # El batch debe tener longitud al menos 1
+        if not isinstance(batch_data, list):
+            raise TypeError("batch_data debe ser una lista de diccionarios")
+
+        return create_batch(batch_data, self.network, self.norm_parameters, self.test_type, self.device)
+
 
